@@ -1,3 +1,11 @@
+//socket connection and methods
+socket = io.connect('localhost:5000/')
+
+socket.on('recieveID', setPlayerID)
+socket.on('sendBikeData', updateEnemyBike)
+socket.on('playerDisconnected', removeDisconnectedPlayers)
+
+
 var player1 = {
     x : 100, 
     y : 300,
