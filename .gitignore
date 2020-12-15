@@ -1,0 +1,7 @@
+# python virtal env
+env
+venv/
+
+# System
+.env
+.DS_Store
