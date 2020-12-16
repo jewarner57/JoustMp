@@ -35,13 +35,13 @@ def socket_connect():
         emit('joinedAs', {"playerNumber": 0}, room=client)
     elif(len(rooms.get(room_name)) > 1):
         # if the user is joining a full lobby then send an error
-        print("-------------------ROOOM FULLL")
+        print("-------------------ROOM FULLL")
         print(len(rooms.get(room_name)))
         emit('error', {"data": "game is already full"})
     else:
         # if the lobby is half full then add user to lobby
         rooms[room_name].append(client)
-        print("------------------- JOINED ROOOOM")
+        print("------------------- JOINED ROOM")
         print(len(rooms.get(room_name)))
         join_room(room_name)
         emit('joinedAs', {"playerNumber": 1}, room=client)
@@ -60,7 +60,13 @@ def playerMoved(position):
 
 @socketio.on('disconnect')
 def disconnect():
-    print(request.sid)
+    """if a user disconnects
+    check if they are in a room and remove them from it"""
+
+    for room, users in rooms.items():
+        for user in users:
+            if user == request.sid:
+                users.remove(user)
 
 
 if __name__ == '__main__':

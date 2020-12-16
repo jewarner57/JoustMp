@@ -17,6 +17,8 @@ function setup() {
     cnv.style('display', 'block')
     cnv.parent('gameContainer');
 
+    // set max framerate
+    frameRate(30);
 
     socket = io.connect('http://localhost:5000/')
 

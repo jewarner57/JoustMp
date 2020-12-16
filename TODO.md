@@ -21,6 +21,8 @@
 
 
 ### Done
+* remove players from room when they disconnect
+* cap framerate at 30 to reduce server load
 * get game canvas working
 * connect socketio to client
 * make server determine which side the user is on when they join
