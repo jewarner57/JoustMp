@@ -1,12 +1,4 @@
-//socket connection and methods
-socket = io.connect('localhost:5000/')
-
-socket.on('recieveID', setPlayerID)
-socket.on('sendBikeData', updateEnemyBike)
-socket.on('playerDisconnected', removeDisconnectedPlayers)
-
-
-var player1 = {
+let player1 = {
     x : 100, 
     y : 300,
     xVel : 0,
@@ -18,7 +10,7 @@ var player1 = {
     bulletY : 100
 }
     
-var player2 = {
+let player2 = {
     x : 700,
     y : 300,
     xVel : 0,
@@ -31,7 +23,17 @@ var player2 = {
 }
 
 function setup() {
-    createCanvas(800, 500);
+    let cnv = createCanvas(800, 500);
+    // center canvas on screen
+    cnv.style('display', 'block')
+    cnv.parent('gameContainer');
+
+
+    socket = io.connect('http://localhost:5000/')
+
+    // socket.on('recieveID', setPlayerID)
+    // socket.on('sendBikeData', updateEnemyBike)
+    // socket.on('playerDisconnected', removeDisconnectedPlayers)
 }
 
 function draw() {
