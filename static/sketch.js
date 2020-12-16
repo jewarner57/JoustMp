@@ -8,6 +8,7 @@ var player2Score = 0;
 
 let socket = ""
 let id = 0
+let playerNum = -1
 
 this.particleList = [];
 this.grassParticleList = [];
@@ -39,6 +40,8 @@ function setup() {
 
     socket.on('joinedAs', (playerChoice) => {
         // set if the player is the left or right side
+        playerNum = playerChoice.playerNumber
+
         if(playerChoice.playerNumber === 0) {
             player1 = new Player(1);
             player2 = new Player(2);
@@ -59,7 +62,7 @@ function setup() {
 
 function draw() {
     if(id !== 0) {
-        socket.emit('playerMoved', {"x": player1.xPos, "y": player1.yPos, "ignore": id})
+        socket.emit('playerMoved', {"x": player1.xPos, "y": player1.yPos, "ignore": id, "playerNum": playerNum})
     }
 
     rectMode(CENTER);
@@ -89,20 +92,7 @@ function draw() {
         player2Score += 100;
     }
     
-    if(Math.abs(player1.xPos-player2.xPos) < 40 && Math.abs(player1.yPos-player2.yPos) < 40)  {
-        if(player1.yPos > player2.yPos && (player1.b == 255 && player2.r == 255)) {
-            player1.reset();
-            player2Score += 100;
-        }
-        else if(player2.yPos > player1.yPos && (player1.b == 255 && player2.r == 255)) {
-            player2.reset();
-            player1Score += 100;
-        }
-        else if(player2.yPos === player1.yPos && (player1.b == 255 && player2.r == 255)) {
-            player1.reset();
-            player2.reset();
-        }
-    }
+    checkPlayerCollisions();
     
     if(player1Score >= 1000 && player2Score >= 1000) {
         fill(255);
@@ -128,7 +118,26 @@ function draw() {
     }
 }
 
-
+function checkPlayerCollisions() {
+    if(Math.abs(player1.xPos-player2.xPos) < 40 && Math.abs(player1.yPos-player2.yPos) < 40)  {
+        if(player1.yPos > player2.yPos && (player1.b == 255 && player2.r == 255)) {
+            socket.emit('playerCollsion')
+            player1.reset();
+            player2Score += 100;
+            
+        }
+        else if(player2.yPos > player1.yPos && (player1.b == 255 && player2.r == 255)) {
+            socket.emit('playerCollsion')
+            player2.reset();
+            player1Score += 100;
+            
+        }
+        else if(player2.yPos === player1.yPos && (player1.b == 255 && player2.r == 255)) {
+            player1.reset();
+            player2.reset();
+        }
+    }
+}
 
 function keyPressed() {
     if(keyCode == UP_ARROW) {

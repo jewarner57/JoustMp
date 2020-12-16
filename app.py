@@ -46,20 +46,34 @@ def socket_connect():
         join_room(room_name)
 
         emit('joinedAs', {"playerNumber": playernum}, room=client)
-        
+
     else:
         emit('error', {'data': "error joining lobby"})
 
 
 @socketio.on('playerMoved')
 def playerMoved(position):
+    """Update the player location if they moved"""
+    roomName = "testingroom"
+
     emit('opponentMoved', {
         'x': position.get('x'),
         'y': position.get('y'),
         'ignore': position.get('ignore')},
-        room="testingroom"
+        room=roomName
     )
+
+    playerNum = position.get('playerNum')
+    gameRoom = rooms.get(roomName)[playerNum]
+    gameRoom["x"] = position.get('x')
+    gameRoom["y"] = position.get('y')
+
     # print(f"x: {position.get('x')}, y: {position.get('y')}")
+
+
+@socketio.on('playerCollsion')
+def playerCollision():
+    print('collision detected~!!!!')
 
 
 @socketio.on('disconnect')

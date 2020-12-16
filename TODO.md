@@ -12,12 +12,13 @@
 * add conditional emiting on client
   * client only sends data if the data is different than the last data it sent
 
-* move collision detection to server
-
 * players can choose their color in the lobby
 
-### Doing
+* Make scores set by the server
+* Make game over condition set by the server
 
+### Doing
+* move collision detection to server
 
 
 ### Done
@@ -32,3 +33,5 @@
 ### Icebox
 * add back player particles that deal damage if the opponent touches them
 * create a small game on the lobby page so users can practice while they wait
+* add in game chat
+* add a restart button to the lobby
