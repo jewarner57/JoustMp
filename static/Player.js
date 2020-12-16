@@ -26,19 +26,7 @@ function Player(playerNum) {
     }
 
     this.display = function() {
-        
-        this.xPos += this.xVel;
-        this.yPos += this.yVel;
-        
-        
-        
-        if(this.xPos > 900 && this.xVel > 0) {
-            this.xPos = -20;
-        }
-        else if(this.xPos < 0 && this.xVel < 0) {
-            this.xPos = 920;
-        }
-        
+
         rect(this.xPos, this.yPos, 40, 40);
         
         for(var i = 0; i < particleList.length; i++) {
@@ -49,6 +37,20 @@ function Player(playerNum) {
                 particleList[i].delete;
             }
         }
+    }
+
+    this.movePlayer = function() {
+
+        this.xPos += this.xVel;
+        this.yPos += this.yVel;
+
+        if(this.xPos > 900 && this.xVel > 0) {
+            this.xPos = -20;
+        }
+        else if(this.xPos < 0 && this.xVel < 0) {
+            this.xPos = 920;
+        }
+        
     }
             
     this.newParticle = function() {

@@ -17,12 +17,14 @@
 * players can choose their color in the lobby
 
 ### Doing
-* make server determine which side the user is on when they join
+* Swap spawn point if the client is player 2
 
 
 ### Done
 * get game canvas working
 * connect socketio to client
+* make server determine which side the user is on when they join
+* opposite players move on both screens
 
 ### Icebox
 * create a small game on the lobby page so users can practice while they wait

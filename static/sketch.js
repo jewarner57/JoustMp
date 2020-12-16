@@ -62,6 +62,7 @@ function draw() {
 
     fill(player1.r, 0, player1.b);
     player1.display();
+    player1.movePlayer();
     
     fill(player2.r, 0, player2.b);
     player2.display();
@@ -80,10 +81,6 @@ function draw() {
     if(player1.yPos < -20) {
         player1.reset();
         player2Score += 100;
-    }
-    if(player2.yPos < -20) {
-        player2.reset();
-        player1Score += 100;
     }
     
     if(Math.abs(player1.xPos-player2.xPos) < 40 && Math.abs(player1.yPos-player2.yPos) < 40)  {

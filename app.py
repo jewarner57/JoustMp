@@ -29,6 +29,7 @@ def socket_connect():
     if(rooms.get(room_name) is None):
         # if the lobby is empty then create a new lobby
         rooms[room_name] = [client]
+        join_room(room_name)
         print("------------------------- ROOM CREATED")
         print(len(rooms.get(room_name)))
         emit('joinedAs', {"playerNumber": 0}, room=client)
@@ -55,6 +56,11 @@ def playerMoved(position):
         room="testingroom"
     )
     # print(f"x: {position.get('x')}, y: {position.get('y')}")
+
+
+@socketio.on('disconnect')
+def disconnect():
+    print(request.sid)
 
 
 if __name__ == '__main__':
