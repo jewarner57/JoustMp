@@ -1,12 +1,13 @@
 ///////////
 
-var player1 = new Player(1);
-var player2 = new Player(2);
+let player1 = new Player(1);
+let player2 = new Player(2);
 
 var player1Score = 0;
 var player2Score = 0;
 
 let socket = ""
+let id = 0
 
 this.particleList = [];
 this.grassParticleList = [];
@@ -30,7 +31,7 @@ function setup() {
     })
 
     socket.on('opponentMoved', (position) => {
-        if(position.ignore !== socket.id) {
+        if(position.ignore !== id && position.ignore !== 0) {
             player2.xPos = position.x
             player2.yPos = position.y
         }
@@ -39,12 +40,14 @@ function setup() {
     socket.on('joinedAs', (playerChoice) => {
         // set if the player is the left or right side
         if(playerChoice.playerNumber === 0) {
-            var player1 = new Player(1);
-            var player2 = new Player(2);
+            player1 = new Player(1);
+            player2 = new Player(2);
+            console.log("player choice:" + playerChoice.playerNumber)
         }
         else {
-            var player1 = new Player(2);
-            var player2 = new Player(1);
+            player1 = new Player(2);
+            player2 = new Player(1);
+            console.log("player choice:" + playerChoice.playerNumber)
         }
         
     })
@@ -55,8 +58,9 @@ function setup() {
 }
 
 function draw() {
-
-    socket.emit('playerMoved', {"x": player1.xPos, "y": player1.yPos, "ignore": socket.id})
+    if(id !== 0) {
+        socket.emit('playerMoved', {"x": player1.xPos, "y": player1.yPos, "ignore": id})
+    }
 
     rectMode(CENTER);
     background(0);
@@ -129,14 +133,14 @@ function draw() {
 function keyPressed() {
     if(keyCode == UP_ARROW) {
 
-       player1.yVel -= 3;
-       player1.newParticle();
-       player1.b = 255;
+       player1.yVel -= 2;
+       //player1.newParticle();
+       //player1.b = 255;
 
-       if(keyIsDown(RIGHT_ARROW) && player1.xVel < 14) {
+       if(keyIsDown(RIGHT_ARROW) && player1.xVel < 10) {
            player1.xVel += 2;
        }
-       else if(keyIsDown(LEFT_ARROW) && player1.xVel > -14) {
+       else if(keyIsDown(LEFT_ARROW) && player1.xVel > -10) {
            player1.xVel -= 2;
        }
     }
@@ -161,14 +165,14 @@ function keyPressed() {
     
     if(keyCode == 87) {
 
-       player2.yVel -= 3;
-       player2.newParticle();
-       player2.r = 255;
+       player2.yVel -= 2;
+       //player2.newParticle();
+       //player2.r = 255;
 
-       if(keyIsDown(68) && player2.xVel < 14) {
+       if(keyIsDown(68) && player2.xVel < 10) {
            player2.xVel += 2;
        }
-       else if(keyIsDown(65) && player2.xVel > -14) {
+       else if(keyIsDown(65) && player2.xVel > -10) {
            player2.xVel -= 2;
        }
     }

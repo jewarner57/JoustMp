@@ -5,7 +5,10 @@ function Player(playerNum) {
     
     this.xVel = 0;
     this.yVel = 0;
-    
+
+    this.startPosX = 0;
+    this.startPosY = 0;
+
     this.r = 255;
     this.b = 255;
     

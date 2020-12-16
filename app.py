@@ -26,25 +26,29 @@ def socket_connect():
     client = request.sid
     join_room(client)
 
-    if(rooms.get(room_name) is None):
+    if(rooms.get(room_name) is None or len(rooms.get(room_name)) == 0):
         # if the lobby is empty then create a new lobby
-        rooms[room_name] = [client]
+        rooms[room_name] = [{"client": client, "number": 0}]
         join_room(room_name)
-        print("------------------------- ROOM CREATED")
-        print(len(rooms.get(room_name)))
         emit('joinedAs', {"playerNumber": 0}, room=client)
+
     elif(len(rooms.get(room_name)) > 1):
         # if the user is joining a full lobby then send an error
-        print("-------------------ROOM FULLL")
-        print(len(rooms.get(room_name)))
         emit('error', {"data": "game is already full"})
-    else:
-        # if the lobby is half full then add user to lobby
-        rooms[room_name].append(client)
-        print("------------------- JOINED ROOM")
-        print(len(rooms.get(room_name)))
+
+    elif(len(rooms.get(room_name)) == 1):
+        # if the lobby is half full then add user to lobby as the opponent
+        playernum = 1
+        if(rooms.get(room_name)[0].get("number") == 1):
+            playernum = 0
+
+        rooms[room_name].append({"client": client, "number": playernum})
         join_room(room_name)
-        emit('joinedAs', {"playerNumber": 1}, room=client)
+
+        emit('joinedAs', {"playerNumber": playernum}, room=client)
+        
+    else:
+        emit('error', {'data': "error joining lobby"})
 
 
 @socketio.on('playerMoved')
@@ -65,10 +69,9 @@ def disconnect():
 
     for room, users in rooms.items():
         for user in users:
-            if user == request.sid:
+            if user.get("client") == request.sid:
                 users.remove(user)
 
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
-    # cors_allowed_origins="*"

@@ -17,10 +17,11 @@
 * players can choose their color in the lobby
 
 ### Doing
-* Swap spawn point if the client is player 2
+
 
 
 ### Done
+* Swap spawn point if the client is player 2
 * remove players from room when they disconnect
 * cap framerate at 30 to reduce server load
 * get game canvas working
@@ -29,4 +30,5 @@
 * opposite players move on both screens
 
 ### Icebox
+* add back player particles that deal damage if the opponent touches them
 * create a small game on the lobby page so users can practice while they wait
