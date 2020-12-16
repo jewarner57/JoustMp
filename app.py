@@ -71,9 +71,19 @@ def playerMoved(position):
     # print(f"x: {position.get('x')}, y: {position.get('y')}")
 
 
-@socketio.on('playerCollsion')
+@socketio.on('playerCollision')
 def playerCollision():
-    print('collision detected~!!!!')
+    roomName = "testingroom"
+    room = rooms.get(roomName)
+
+    if len(room) > 1:
+        if(abs(room[0].get('x')-room[1].get('x')) < 40 and abs(room[0].get('y')-room[1].get('y')) < 40):
+            if(room[0].get('y') > room[1].get('y')):
+                print('Player 0 Wins')
+                emit('resetPlayer', {"number": 0}, room=roomName)
+            elif(room[0].get('y') < room[1].get('y')):
+                print('Player 1 Wins')
+                emit('resetPlayer', {"number": 1}, room=roomName)
 
 
 @socketio.on('disconnect')

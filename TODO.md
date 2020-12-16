@@ -17,6 +17,10 @@
 * Make scores set by the server
 * Make game over condition set by the server
 
+* only start the game once both players have connected
+
+* add a death animation to make it clear who died
+
 ### Doing
 * move collision detection to server
 

@@ -55,6 +55,12 @@ function setup() {
         
     })
 
+    socket.on('resetPlayer', (num) => {
+        if (num.number === playerNum) {
+            player1.reset()
+        }
+    })
+
     socket.on('error', (error) => {
         console.log(error.data)
     })
@@ -121,20 +127,21 @@ function draw() {
 function checkPlayerCollisions() {
     if(Math.abs(player1.xPos-player2.xPos) < 40 && Math.abs(player1.yPos-player2.yPos) < 40)  {
         if(player1.yPos > player2.yPos && (player1.b == 255 && player2.r == 255)) {
-            socket.emit('playerCollsion')
-            player1.reset();
-            player2Score += 100;
+            socket.emit('playerCollision')
+            //player1.reset();
+            //player2Score += 100;
             
         }
         else if(player2.yPos > player1.yPos && (player1.b == 255 && player2.r == 255)) {
-            socket.emit('playerCollsion')
-            player2.reset();
-            player1Score += 100;
+            socket.emit('playerCollision')
+            //player2.reset();
+            //player1Score += 100;
             
         }
         else if(player2.yPos === player1.yPos && (player1.b == 255 && player2.r == 255)) {
-            player1.reset();
-            player2.reset();
+            socket.emit('playerCollision')
+            //player1.reset();
+            //player2.reset();
         }
     }
 }
