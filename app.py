@@ -1,11 +1,15 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_socketio import SocketIO, emit, join_room
 import os
 import secrets
+from dotenv import load_dotenv
+
 
 # Server Config
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+
+load_dotenv()
+app.secret_key = os.getenv('SECRET_KEY')
 socketio = SocketIO(app)
 
 
@@ -14,23 +18,30 @@ def home():
     return render_template('home.html')
 
 
-@app.route("/createLobby", methods={"GET", "POST"})
-def createLobby():
+@app.route('/lobby', methods={"GET", "POST"})
+def lobby():
     if request.method == 'POST':
         username = request.form.get('username')
         color = request.form.get('color')
-        lobbyCode = secrets.token_hex(6)
+        lobbyCode = request.form.get('lobbycode')
+
+        if lobbyCode is None or lobbyCode == "":
+            lobbyCode = secrets.token_hex(6)
 
         context = {
             "username": username,
-            "color": color,
+            "playerColor": color,
             "lobbyCode": lobbyCode,
         }
+        
+        for room, users in rooms.items():
+            if room == lobbyCode and len(users) == 2:
+                flash("Error: Game Full")
+                return redirect(url_for("home"))
 
-        return render_template('lobby.html', **context)
+        return render_template("lobby.html", **context)
     else:
-        return render_template('home.html')
-
+        return redirect(url_for("home"))
 
 # Game Variables
 rooms = {}
@@ -42,8 +53,7 @@ def socket_connect():
     """When the user connects to websocket server add them to
     a lobby and tell them which player they are left(0)/right(1)"""
 
-    room_name = "testingroom"
-    # user_name = "test username"
+    room_name = request.args.get('lobby')
     client = request.sid
     join_room(client)
 
@@ -56,7 +66,8 @@ def socket_connect():
     elif(len(rooms.get(room_name)) > 1):
         # if the user is joining a full lobby then send an error
         emit('error', {"data": "game is already full"})
-
+        print("----------------------------------------ROOM FULL")
+        
     elif(len(rooms.get(room_name)) == 1):
         # if the lobby is half full then add user to lobby as the opponent
         playernum = 1
@@ -67,6 +78,7 @@ def socket_connect():
         join_room(room_name)
 
         emit('joinedAs', {"playerNumber": playernum}, room=client)
+        emit('gameReady', room=room_name)
 
     else:
         emit('error', {'data': "error joining lobby"})
@@ -75,7 +87,7 @@ def socket_connect():
 @socketio.on('playerMoved')
 def playerMoved(position):
     """Update the player location if they moved"""
-    roomName = "testingroom"
+    roomName = position.get('lobby')
 
     emit('opponentMoved', {
         'x': position.get('x'),
@@ -93,8 +105,8 @@ def playerMoved(position):
 
 
 @socketio.on('playerCollision')
-def playerCollision():
-    roomName = "testingroom"
+def playerCollision(room):
+    roomName = room.get('lobby')
     room = rooms.get(roomName)
 
     if len(room) > 1:
@@ -112,10 +124,14 @@ def disconnect():
     """if a user disconnects
     check if they are in a room and remove them from it"""
 
+    print("-----------------")
+    print("disconnect")
+
     for room, users in rooms.items():
         for user in users:
             if user.get("client") == request.sid:
                 users.remove(user)
+                print("removed removed")
 
 
 if __name__ == '__main__':

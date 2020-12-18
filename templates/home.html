@@ -16,14 +16,16 @@
                         </div>
                     </div>
                     
-                    <label for="lobbycode">Lobby Join Code:</label>
+                    <label for="lobbycode">Lobby Join Code: (leave empty for new game)</label>
                     <input id="lobbycode" type="text" name="lobbycode"/>
 
-                    <input type="submit" class="btn" value="Join Lobby" formaction="/lobby"/>
-                    <input type="submit" class="btn" value="Create Lobby" formaction="/createLobby"/>
+                    <input type="submit" class="btn" value="Join/Create" formaction="/lobby"/>
                     
                 </div>
             </form>
+            {% for message in get_flashed_messages() %}
+                <p class="errorMessage">{{ message }}</p>
+            {% endfor %}
         </div>
     </div>
 </section>
