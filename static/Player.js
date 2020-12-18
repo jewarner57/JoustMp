@@ -14,6 +14,7 @@ function Player(playerNum) {
     
     
     
+    
     if(playerNum === 1) {
         this.xPos = 250;
         this.yPos = 400;
@@ -67,13 +68,13 @@ function Player(playerNum) {
         
         if(playerNum === 1) {
             this.xPos = 250;
-            this.yPos = 500;
-            this.b = 50;
+            this.yPos = 100;
+            //this.b = 50;
         }
         else if(playerNum === 2) {
             this.xPos = 650;
-            this.yPos = 500;
-            this.r = 50;
+            this.yPos = 100;
+            //this.r = 50;
         }
         
     }

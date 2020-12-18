@@ -1,0 +1,25 @@
+
+{% extends 'base.html' %}
+{% block header %}
+<!-- import socket.io -->
+<script src="https://unpkg.com/socket.io-client@3.0.1/dist/socket.io.min.js"></script>
+
+<!-- Import the game's javascript files -->
+<script src="{{url_for('static', filename='Grass.js')}}" type="text/javascript"></script>
+<script src="{{url_for('static', filename='Particle.js')}}" type="text/javascript"></script>
+<script src="{{url_for('static', filename='Player.js')}}" type="text/javascript"></script>
+<script src="{{url_for('static', filename='sketch.js')}}" type="text/javascript"></script>
+
+<!-- Import P5.js Library -->
+<script src="{{url_for('static', filename='libraries/p5.js')}}"></script>
+<script src="{{url_for('static', filename='libraries/p5.dom.js')}}"></script>
+<script src="{{url_for('static', filename='libraries/p5.sound.js')}}"></script>
+
+<style> body {padding: 0; margin: 0;} canvas {vertical-align: top;} </style>
+{% endblock header%}
+
+{% block content %}
+<div id="gameContainer">
+  <h1>Joust</h1>
+</div>
+{% endblock content %}

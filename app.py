@@ -7,15 +7,28 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 socketio = SocketIO(app)
 
+
+@app.route("/")
+def home():
+    return render_template('home.html')
+
+
+@app.route("/createLobby", methods={"GET", "POST"})
+def createLobby():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        color = request.form.get('color')
+
+        return render_template('home.html')
+    else:
+        return render_template('home.html')
+
+
 # Game Variables
 rooms = {}
 
 
-@app.route("/")
-def home():
-    return render_template('index.html')
-
-
+# SocketIO Listeners
 @socketio.on('connect')
 def socket_connect():
     """When the user connects to websocket server add them to

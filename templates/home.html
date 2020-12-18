@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<section>
+    <div class="startGameSection">
+        <h1>Joust Multiplayer</h1>
+        <div>
+            <form method="POST">
+                <div class="formgroup">
+                    <label for="username">Username:</label>
+                    <input id="username" type="text" name="username" required="true"/>
+                    <div>
+                        <label for="color">Color:</label>
+                        <div class="colorSelectContainer">
+                            <input id="color" type="color" name="color" required="true"/>
+                            <div id="colorDiv"></div>
+                        </div>
+                    </div>
+                    
+                    <label for="lobbycode">Lobby Join Code:</label>
+                    <input id="lobbycode" type="text" name="lobbycode"/>
+
+                    <input type="submit" class="btn" value="Join Lobby" formaction="/lobby"/>
+                    <input type="submit" class="btn" value="Create Lobby" formaction="/createLobby"/>
+                    
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<script>
+    let startColor = '#' + Math.floor(Math.random()*16777215).toString(16)
+    const colorSelect = document.getElementById("color");
+    const colorDiv = document.getElementById("colorDiv");
+
+    colorSelect.value = startColor
+    updateColorDiv()
+
+    document.getElementById("color").addEventListener("input", updateColorDiv);
+
+    function updateColorDiv() {
+        color = colorSelect.value;
+        colorDiv.style.cssText ="background-color: " + color;
+    }
+</script>
+{% endblock content %}
