@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block header %}
+<!-- import socket.io -->
+<script src="https://unpkg.com/socket.io-client@3.0.1/dist/socket.io.min.js"></script>
+{% endblock header%}
+
+{% block content %}
+<section>
+    <div class="lobby">
+        <h1>Joust Multiplayer</h1>
+        
+        <div class="lobbyInfo">
+            <p>Room Join Code: {{lobbyCode}}</p>
+            <p>{{username}} Waiting For Opponent (1/2) ...</p>
+            
+            <div class="lobbyLoadingSquare" style="background-color: {{color}};"></div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

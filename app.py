@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO, emit, join_room
 import os
+import secrets
 
 # Server Config
 app = Flask(__name__)
@@ -18,8 +19,15 @@ def createLobby():
     if request.method == 'POST':
         username = request.form.get('username')
         color = request.form.get('color')
+        lobbyCode = secrets.token_hex(6)
 
-        return render_template('home.html')
+        context = {
+            "username": username,
+            "color": color,
+            "lobbyCode": lobbyCode,
+        }
+
+        return render_template('lobby.html', **context)
     else:
         return render_template('home.html')
 
