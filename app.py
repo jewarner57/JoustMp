@@ -25,7 +25,11 @@ def lobby():
         color = request.form.get('color')
         lobbyCode = request.form.get('lobbycode')
 
+        newLobby = False
+        foundRoom = False
+
         if lobbyCode is None or lobbyCode == "":
+            newLobby = True
             lobbyCode = secrets.token_hex(6)
 
         context = {
@@ -33,15 +37,22 @@ def lobby():
             "playerColor": color,
             "lobbyCode": lobbyCode,
         }
-        
+
         for room, users in rooms.items():
-            if room == lobbyCode and len(users) == 2:
-                flash("Error: Game Full")
-                return redirect(url_for("home"))
+            if room == lobbyCode:
+                foundRoom = True
+                if len(users) == 2:
+                    flash("Error: Game Full")
+                    return redirect(url_for("home"))
+
+        if not newLobby and not foundRoom:
+            flash(f"Could Not Find Lobby With Code: \"{lobbyCode}\"")
+            return redirect(url_for("home"))
 
         return render_template("lobby.html", **context)
     else:
         return redirect(url_for("home"))
+
 
 # Game Variables
 rooms = {}
@@ -67,7 +78,7 @@ def socket_connect():
         # if the user is joining a full lobby then send an error
         emit('error', {"data": "game is already full"})
         print("----------------------------------------ROOM FULL")
-        
+
     elif(len(rooms.get(room_name)) == 1):
         # if the lobby is half full then add user to lobby as the opponent
         playernum = 1
@@ -82,6 +93,20 @@ def socket_connect():
 
     else:
         emit('error', {'data': "error joining lobby"})
+
+
+@socketio.on('opponentColor')
+def sendOpponentColor(colorData):
+    color = colorData.get('color')
+    sender = request.sid
+    room = rooms.get(colorData.get('room'))
+
+    for player in room:
+        if sender is not player.get('client'):
+            print(sender)
+            print(player.get('client'))
+            print("-----------------")
+            emit("getOpponentColor", {'color': color}, room=player.get('client'))
 
 
 @socketio.on('playerMoved')

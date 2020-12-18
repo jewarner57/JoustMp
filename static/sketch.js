@@ -11,6 +11,7 @@ let id = 0
 let playerNum = -1
 let gameLoaded = false
 let lobbyCode = 0
+opponentColor = "#ffffff"
 
 this.particleList = [];
 this.grassParticleList = [];
@@ -26,6 +27,7 @@ function setup() {
 
 
     lobbyCode = select('#lobbyCode').html()
+    playerColor = select('#playerColor').html()
 
     // set max framerate
     frameRate(30);
@@ -37,13 +39,17 @@ function setup() {
         console.log(socket.id)
 
         id=socket.id
+    })
 
-        
+    socket.on('getOpponentColor', (opponent) => {
+        opponentColor = opponent.color
+        console.log("HERE IS COLOR"+opponentColor)
     })
 
     socket.on('gameReady', () => {
         let lobby = select("#lobby")
         lobby.hide()
+        socket.emit('opponentColor', {'room': lobbyCode, 'color': playerColor})
         game.show()
         gameLoaded = true
     })
@@ -93,11 +99,11 @@ function draw() {
         background(0);
         noStroke();
 
-        fill(player1.r, 0, player1.b);
+        fill(playerColor);
         player1.display();
         player1.movePlayer();
         
-        fill(player2.r, 0, player2.b);
+        fill(opponentColor);
         player2.display();
 
         //bottom platform

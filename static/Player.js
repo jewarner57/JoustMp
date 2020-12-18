@@ -19,14 +19,10 @@ function Player(playerNum) {
         this.xPos = 250;
         this.yPos = 400;
         
-        this.r = 0;
-        
     }
     else if(playerNum === 2) {
         this.xPos = 650;
         this.yPos = 400;
-        
-        this.b = 0;
     }
 
     this.display = function() {

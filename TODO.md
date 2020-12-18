@@ -12,12 +12,15 @@
 
 * add a death animation to make it clear who died
 
+
 ### Doing
+* display character usernames in game
 
 
 
 
 ### Done
+* change player colors to the colors they choose in the menu
 * flash error when user tries to join a full lobby
 * only start the game once both players have connected
 * create lobby page
