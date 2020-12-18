@@ -8,10 +8,16 @@ var player2Score = 0;
 
 let socket = ""
 let id = 0
-let playerNum = -1
-let gameLoaded = false
 let lobbyCode = 0
-opponentColor = "#ffffff"
+
+let playerNum = -1
+let playerColor = "#ffffff"
+let playerUsername = 'None'
+let gameLoaded = false
+
+let opponentColor = "#ffffff"
+let opponentName = "None"
+let opponentDisconnect = false
 
 this.particleList = [];
 this.grassParticleList = [];
@@ -28,6 +34,8 @@ function setup() {
 
     lobbyCode = select('#lobbyCode').html()
     playerColor = select('#playerColor').html()
+    playerUsername = select('#username').html()
+
 
     // set max framerate
     frameRate(30);
@@ -35,21 +43,21 @@ function setup() {
     socket = io.connect('http://localhost:5000?lobby='+lobbyCode)
 
     socket.on('connect', () => {
-        console.log(socket.connected)
-        console.log(socket.id)
+        // console.log(socket.connected)
+        // console.log(socket.id)
 
         id=socket.id
     })
 
-    socket.on('getOpponentColor', (opponent) => {
+    socket.on('getOpponentInfo', (opponent) => {
         opponentColor = opponent.color
-        console.log("HERE IS COLOR"+opponentColor)
+        opponentName = opponent.username
     })
 
     socket.on('gameReady', () => {
         let lobby = select("#lobby")
         lobby.hide()
-        socket.emit('opponentColor', {'room': lobbyCode, 'color': playerColor})
+        socket.emit('opponentInfo', {'room': lobbyCode, 'color': playerColor, 'username': playerUsername})
         game.show()
         gameLoaded = true
     })
@@ -68,12 +76,10 @@ function setup() {
         if(playerChoice.playerNumber === 0) {
             player1 = new Player(1);
             player2 = new Player(2);
-            console.log("player choice:" + playerChoice.playerNumber)
         }
         else {
             player1 = new Player(2);
             player2 = new Player(1);
-            console.log("player choice:" + playerChoice.playerNumber)
         }
         
     })
@@ -82,6 +88,11 @@ function setup() {
         if (num.number === playerNum) {
             player1.reset()
         }
+    })
+
+    socket.on('userDisconnect', () => {
+        opponentDisconnect = true;
+        console.log("Opponent Disconnected")
     })
 
     socket.on('error', (error) => {
@@ -103,8 +114,14 @@ function draw() {
         player1.display();
         player1.movePlayer();
         
-        fill(opponentColor);
-        player2.display();
+        if(!opponentDisconnect) {
+            fill(opponentColor);
+            player2.display();
+        }
+        else {
+            textSize(30)
+            text("Opponent Left", width/2-100, height/2);
+        }
 
         //bottom platform
         rectMode(CORNER);
@@ -114,9 +131,10 @@ function draw() {
         rect(-10, height-50, width+10, 10);
         
         fill(0);
-        text(player1Score, 40, height-15);
-        text(player2Score, width-40, height-15);
-        
+        textSize(14)
+        text(playerUsername + ": " + player1Score, 40, height-15);
+        text(opponentName + ": " + player2Score, width-15-(opponentName.length*18), height-15);
+
         if(player1.yPos < -20) {
             player1.reset();
             player2Score += 100;

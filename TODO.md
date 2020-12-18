@@ -5,21 +5,21 @@
 * add conditional emiting on client
   * client only sends data if the data is different than the last data it sent
 
-* Make scores set by the server
-* Make game over condition set by the server
-
 * add character limit to usernames
 
 * add a death animation to make it clear who died
 
 
 ### Doing
-* display character usernames in game
+* Make scores set by the server
+* Make game over condition set by the server
 
 
 
 
 ### Done
+* display message if opponent disconnects
+* display character usernames in game
 * change player colors to the colors they choose in the menu
 * flash error when user tries to join a full lobby
 * only start the game once both players have connected

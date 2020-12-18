@@ -11,9 +11,7 @@ function Player(playerNum) {
 
     this.r = 255;
     this.b = 255;
-    
-    
-    
+
     
     if(playerNum === 1) {
         this.xPos = 250;

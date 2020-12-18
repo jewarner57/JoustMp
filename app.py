@@ -77,7 +77,6 @@ def socket_connect():
     elif(len(rooms.get(room_name)) > 1):
         # if the user is joining a full lobby then send an error
         emit('error', {"data": "game is already full"})
-        print("----------------------------------------ROOM FULL")
 
     elif(len(rooms.get(room_name)) == 1):
         # if the lobby is half full then add user to lobby as the opponent
@@ -95,18 +94,16 @@ def socket_connect():
         emit('error', {'data': "error joining lobby"})
 
 
-@socketio.on('opponentColor')
-def sendOpponentColor(colorData):
-    color = colorData.get('color')
+@socketio.on('opponentInfo')
+def sendOpponentInfo(opponentInfo):
+    color = opponentInfo.get('color')
+    username = opponentInfo.get('username')
     sender = request.sid
-    room = rooms.get(colorData.get('room'))
+    room = rooms.get(opponentInfo.get('room'))
 
     for player in room:
         if sender is not player.get('client'):
-            print(sender)
-            print(player.get('client'))
-            print("-----------------")
-            emit("getOpponentColor", {'color': color}, room=player.get('client'))
+            emit("getOpponentInfo", {'color': color, 'username': username}, room=player.get('client'))
 
 
 @socketio.on('playerMoved')
@@ -122,11 +119,12 @@ def playerMoved(position):
     )
 
     playerNum = position.get('playerNum')
-    gameRoom = rooms.get(roomName)[playerNum]
-    gameRoom["x"] = position.get('x')
-    gameRoom["y"] = position.get('y')
 
-    # print(f"x: {position.get('x')}, y: {position.get('y')}")
+    # check if the player exists before looking for x, y
+    if playerNum <= len(rooms.get(roomName))-1:
+        gameRoom = rooms.get(roomName)[playerNum]
+        gameRoom["x"] = position.get('x')
+        gameRoom["y"] = position.get('y')
 
 
 @socketio.on('playerCollision')
@@ -149,14 +147,13 @@ def disconnect():
     """if a user disconnects
     check if they are in a room and remove them from it"""
 
-    print("-----------------")
-    print("disconnect")
+    print(f"-- User: {request.sid} disconnected --")
 
     for room, users in rooms.items():
         for user in users:
             if user.get("client") == request.sid:
                 users.remove(user)
-                print("removed removed")
+                emit('userDisconnect', room=room)
 
 
 if __name__ == '__main__':
