@@ -40,7 +40,7 @@ function setup() {
     // set max framerate
     frameRate(30);
 
-    socket = io.connect('http://localhost:5000?lobby='+lobbyCode)
+    socket = io.connect('https://joust-multiplayer.herokuapp.com?lobby='+lobbyCode)
 
     socket.on('connect', () => {
         // console.log(socket.connected)
