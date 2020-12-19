@@ -63,6 +63,9 @@ rooms = {}
 def socket_connect():
     """When the user connects to websocket server add them to
     a lobby and tell them which player they are left(0)/right(1)"""
+    print("-------Room List--------")
+    print(rooms)
+    print("------------------------")
 
     room_name = request.args.get('lobby')
     client = request.sid
