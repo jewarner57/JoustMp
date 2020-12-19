@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 load_dotenv()
 app.secret_key = os.getenv('SECRET_KEY')
-socketio = SocketIO(app)
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 
 @app.route("/")
