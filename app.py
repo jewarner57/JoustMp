@@ -70,7 +70,7 @@ def socket_connect():
 
     if(rooms.get(room_name) is None or len(rooms.get(room_name)) == 0):
         # if the lobby is empty then create a new lobby
-        rooms[room_name] = [{"client": client, "number": 0}]
+        rooms[room_name] = [{"client": client, "number": 0, "score": 0}]
         join_room(room_name)
         emit('joinedAs', {"playerNumber": 0}, room=client)
 
@@ -84,7 +84,7 @@ def socket_connect():
         if(rooms.get(room_name)[0].get("number") == 1):
             playernum = 0
 
-        rooms[room_name].append({"client": client, "number": playernum})
+        rooms[room_name].append({"client": client, "number": playernum, "score": 0})
         join_room(room_name)
 
         emit('joinedAs', {"playerNumber": playernum}, room=client)
@@ -135,11 +135,20 @@ def playerCollision(room):
     if len(room) > 1:
         if(abs(room[0].get('x')-room[1].get('x')) < 40 and abs(room[0].get('y')-room[1].get('y')) < 40):
             if(room[0].get('y') > room[1].get('y')):
-                print('Player 0 Wins')
-                emit('resetPlayer', {"number": 0}, room=roomName)
+
+                room[1]['score'] += 50
+                p1score = room[0].get('score')
+                p2score = room[1].get('score')
+
+                emit('resetPlayer', {"number": 0, "p1score": p1score, "p2score": p2score}, room=roomName)
+
             elif(room[0].get('y') < room[1].get('y')):
-                print('Player 1 Wins')
-                emit('resetPlayer', {"number": 1}, room=roomName)
+
+                room[0]['score'] += 50
+                p1score = room[0].get('score')
+                p2score = room[1].get('score')
+
+                emit('resetPlayer', {"number": 1, "p1score": p1score, "p2score": p2score}, room=roomName)
 
 
 @socketio.on('disconnect')

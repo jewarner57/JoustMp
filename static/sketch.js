@@ -84,12 +84,22 @@ function setup() {
         
     })
 
-    socket.on('resetPlayer', (num) => {
-        if (num.number === playerNum) {
+    socket.on('resetPlayer', (resetData) => {
+        if (resetData.number === playerNum) {
             player1.reset()
         }
-    })
 
+        print(resetData)
+
+        if(playerNum == 0) {
+            player1Score = resetData.p1score
+            player2Score = resetData.p2score
+        } 
+        else {
+            player1Score = resetData.p2score
+            player2Score = resetData.p1score
+        }
+    })
     socket.on('userDisconnect', () => {
         opponentDisconnect = true;
         console.log("Opponent Disconnected")
@@ -134,11 +144,6 @@ function draw() {
         textSize(14)
         text(playerUsername + ": " + player1Score, 40, height-15);
         text(opponentName + ": " + player2Score, width-15-(opponentName.length*18), height-15);
-
-        if(player1.yPos < -20) {
-            player1.reset();
-            player2Score += 100;
-        }
         
         checkPlayerCollisions();
         
@@ -147,12 +152,14 @@ function draw() {
             text('It Was a tie!', width/2, height/2);
         }
         else if(player1Score >= 1000) {
-            fill(0, 0, 255);
-            text("Player 1 Wins", width/2, height/2);
+            fill(playerColor);
+            textSize(25)
+            text("You Won", width/2-70, height/2-100);
         }
         else if(player2Score >= 1000) {
-            fill(255, 0, 0);
-            text("Player 2 Wins", width/2, height/2);
+            fill(opponentColor);
+            textSize(25)
+            text("Your Opponent Won", width/2-100, height/2-100);
         }
         
         for(var i = 0; i < grassParticleList.length; i++) {
@@ -168,23 +175,22 @@ function draw() {
 }
 
 function checkPlayerCollisions() {
+    // check if player is in bounds
+    if(player1.yPos < -20) {
+        player1.reset();
+        socket.emit('playerBounds', {'lobby': lobbyCode})
+    }
+
+    // check if players are touching and determine who is higher
     if(Math.abs(player1.xPos-player2.xPos) < 40 && Math.abs(player1.yPos-player2.yPos) < 40)  {
         if(player1.yPos > player2.yPos && (player1.b == 255 && player2.r == 255)) {
             socket.emit('playerCollision', {'lobby': lobbyCode})
-            //player1.reset();
-            //player2Score += 100;
-            
         }
         else if(player2.yPos > player1.yPos && (player1.b == 255 && player2.r == 255)) {
             socket.emit('playerCollision', {'lobby': lobbyCode})
-            //player2.reset();
-            //player1Score += 100;
-            
         }
         else if(player2.yPos === player1.yPos && (player1.b == 255 && player2.r == 255)) {
             socket.emit('playerCollision', {'lobby': lobbyCode})
-            //player1.reset();
-            //player2.reset();
         }
     }
 }
@@ -195,7 +201,6 @@ function keyPressed() {
 
         player1.yVel -= 2;
         //player1.newParticle();
-        //player1.b = 255;
 
         if(keyIsDown(RIGHT_ARROW) && player1.xVel < 10) {
             player1.xVel += 2;
@@ -227,7 +232,6 @@ function keyPressed() {
 
         player2.yVel -= 2;
         //player2.newParticle();
-        //player2.r = 255;
 
         if(keyIsDown(68) && player2.xVel < 10) {
             player2.xVel += 2;

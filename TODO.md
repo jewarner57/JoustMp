@@ -9,15 +9,19 @@
 
 * add a death animation to make it clear who died
 
+* make gravity handled by the server?
+  * is this the best thing to do?
+  * how can I prevent cheating from being so easy
+
+* Make game over condition set by the server  
+
+* make playerCollision in app only run once on a collision
 
 ### Doing
-* Make scores set by the server
-* Make game over condition set by the server
-
-
-
+* deploy to heroku
 
 ### Done
+* Make scores set by the server
 * display message if opponent disconnects
 * display character usernames in game
 * change player colors to the colors they choose in the menu
