@@ -41,6 +41,7 @@ function setup() {
     frameRate(30);
 
     socket = io.connect('https://joust-multiplayer.herokuapp.com?lobby='+lobbyCode)
+    //'http://localhost:8000?lobby='
 
     socket.on('connect', () => {
         // console.log(socket.connected)
