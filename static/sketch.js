@@ -147,7 +147,7 @@ function draw() {
         fill(0);
         textSize(14)
         text(playerUsername + ": " + player1Score, 40, height-15);
-        text(opponentName + ": " + player2Score, width-15-(opponentName.length*18), height-15);
+        text(opponentName + ": " + player2Score, width-35-(opponentName.length*18), height-15);
         
         checkPlayerCollisions();
         
