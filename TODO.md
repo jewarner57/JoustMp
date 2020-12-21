@@ -15,12 +15,13 @@
 
 * Make game over condition set by the server  
 
-* make playerCollision in app only run once on a collision
+* make playerCollision in server only run once on a collision
 
 ### Doing
-* deploy to heroku
+* fix bug where player 1 starts with a high upward velocity
 
 ### Done
+* deploy to heroku
 * Make scores set by the server
 * display message if opponent disconnects
 * display character usernames in game

@@ -61,6 +61,9 @@ function setup() {
         socket.emit('opponentInfo', {'room': lobbyCode, 'color': playerColor, 'username': playerUsername})
         game.show()
         gameLoaded = true
+
+        player1.xVel = 0
+        player1.yVel = 0
     })
 
     socket.on('opponentMoved', (position) => {
