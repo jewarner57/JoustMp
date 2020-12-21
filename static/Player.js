@@ -79,29 +79,32 @@ function Player(playerNum) {
 var timer = setInterval(lowerVelocity, 60);
 
 function lowerVelocity() {
-    if(player2.yPos < height-70) {
-        player2.yVel += 0.5;
-    }
-    else if(player2.yPos + player2.yVel > height-70) {
-        player2.yPos = height-70;
-        if(player2.yVel > 1) {
-            player2.yVel = player2.yVel*-1/5;
+    if(gameLoaded) {
+        if(player2.yPos < height-70) {
+            player2.yVel += 0.5;
         }
-        else {
-            player2.yVel = 0;
+        else if(player2.yPos + player2.yVel > height-70) {
+            player2.yPos = height-70;
+            if(player2.yVel > 1) {
+                player2.yVel = player2.yVel*-1/5;
+            }
+            else {
+                player2.yVel = 0;
+            }
         }
-    }
-    
-    if(player1.yPos < height-70) {
-        player1.yVel += 0.5;
-    }
-    else if(player1.yPos + player1.yVel > height-70) {
-        player1.yPos = height-70;
-        if(player1.yVel > 1) {
-            player1.yVel = player1.yVel*-1/5;
+        
+        
+        if(player1.yPos < height-70) {
+            player1.yVel += 0.5;
         }
-        else {
-            player1.yVel = 0;
+        else if(player1.yPos + player1.yVel > height-70) {
+            player1.yPos = height-70;
+            if(player1.yVel > 1) {
+                player1.yVel = player1.yVel*-1/5;
+            }
+            else {
+                player1.yVel = 0;
+            }
         }
     }
 }
