@@ -11,6 +11,14 @@ html {
     padding: 20px 0 100px 0;
 }
 
+#game {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
 h1, h2 {
     color: white;
     text-align: center;

@@ -19,20 +19,24 @@
 
 {% block content %}
 <section>
-    <div id="lobby">
-        <h1>Joust Multiplayer</h1>
-        
-        <div class="lobbyInfo">
-            <p>Lobby Join Code: <span id="lobbyCode">{{lobbyCode}}</span></p>
-            <p><span id="username">{{username}}</span> Waiting For Opponent (1/2) ...</p>
+    <div>
+        <div id="lobby">
+            <h1>Joust Multiplayer</h1>
             
-            <div class="lobbyLoadingSquare" style="background-color: {{playerColor}};"></div>
-            <span id="playerColor" style="display: none;">{{playerColor}}</span>
+            <div class="lobbyInfo">
+                <p>Lobby Join Code: <span id="lobbyCode">{{lobbyCode}}</span></p>
+                <p><span id="username">{{username}}</span> Waiting For Opponent (1/2) ...</p>
+                
+                <div class="lobbyLoadingSquare" style="background-color: {{playerColor}};"></div>
+                <span id="playerColor" style="display: none;">{{playerColor}}</span>
+            </div>
+        </div>
+
+        <div id="gameContainer">
+            <div id="game">
+                <h1>Joust</h1>
+            </div>
         </div>
     </div>
-
-    <div id="gameContainer">
-        <h1>Joust</h1>
-      </div>
 </section>
 {% endblock content %}

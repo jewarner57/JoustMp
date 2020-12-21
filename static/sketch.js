@@ -26,7 +26,7 @@ function setup() {
     cnv = createCanvas(900, 600);
     // center canvas on screen
     cnv.style('display', 'block')
-    cnv.parent('gameContainer');
+    cnv.parent('game');
 
     game = select('#gameContainer')
     game.hide()
