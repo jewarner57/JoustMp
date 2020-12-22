@@ -18,6 +18,10 @@
 
 * balance the controls to make it feel a little faster paced and less cumbersome
 
+* Generate random default usernames
+
+* prevent users from using colors that are too dark (background contrast)
+
 ### Doing
 * Add game instructions to homepage and readme
 
