@@ -2,9 +2,6 @@
 
 ### Do
 
-* add conditional emiting on client
-  * client only sends data if the data is different than the last data it sent
-
 * add character limit to usernames
 
 * add a death animation to make it clear who died
@@ -17,10 +14,18 @@
 
 * make playerCollision in server only run once on a collision
 
+* find a way to measure network latency / performance and lag
+
+* balance the controls to make it feel a little faster paced and less cumbersome
+
 ### Doing
-* fix bug where player 1 starts with a high upward velocity
+* Add game instructions to homepage and readme
+
 
 ### Done
+* add conditional emiting on client
+  * client only sends data if the data is different than the last data it sent
+* fix bug where player 1 starts with a high upward velocity
 * deploy to heroku
 * Make scores set by the server
 * display message if opponent disconnects
@@ -46,6 +51,5 @@
 
 ### Icebox
 * add back player particles that deal damage if the opponent touches them
-* create a small game on the lobby page so users can practice while they wait
 * add in game chat
 * add a restart button to the lobby

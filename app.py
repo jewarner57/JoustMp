@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 load_dotenv()
 app.secret_key = os.getenv('SECRET_KEY')
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins="https://joust-multiplayer.herokuapp.com")
 
 
 @app.route("/")

@@ -9,6 +9,7 @@ var player2Score = 0;
 let socket = ""
 let id = 0
 let lobbyCode = 0
+let prevSentData = ""
 
 let playerNum = -1
 let playerColor = "#ffffff"
@@ -41,7 +42,8 @@ function setup() {
     frameRate(30);
 
     socket = io.connect('https://joust-multiplayer.herokuapp.com?lobby='+lobbyCode)
-    //'http://localhost:8000?lobby='
+    //'localhost:5000?lobby='
+    //'https://joust-multiplayer.herokuapp.com?lobby='
 
     socket.on('connect', () => {
         // console.log(socket.connected)
@@ -93,8 +95,6 @@ function setup() {
             player1.reset()
         }
 
-        print(resetData)
-
         if(playerNum == 0) {
             player1Score = resetData.p1score
             player2Score = resetData.p2score
@@ -116,8 +116,11 @@ function setup() {
 
 function draw() {
     if(gameLoaded) {
-        if(id !== 0) {
+        // check if the player has connect
+        // also check if the current position is the same as the position in the last frame
+        if(id !== 0 && (prevSentData.x !== player1.xPos || prevSentData.y !== player1.yPos)) {
             socket.emit('playerMoved', {"x": player1.xPos, "y": player1.yPos, "ignore": id, "playerNum": playerNum, "lobby": lobbyCode})
+            prevSentData = {"x": player1.xPos, "y": player1.yPos}
         }
 
         rectMode(CENTER);
@@ -227,37 +230,6 @@ function keyPressed() {
             
             for(var i = 0; i < 10; i++) {
                 grassParticleList[grassParticleList.length] = new Grass(player1.xPos+20, player1.yPos+20, player1.xVel+(Math.random()*3+1), -Math.random()*10);
-            }
-        }
-        
-        
-        
-        if(keyCode == 87) {
-
-        player2.yVel -= 2;
-        //player2.newParticle();
-
-        if(keyIsDown(68) && player2.xVel < 10) {
-            player2.xVel += 2;
-        }
-        else if(keyIsDown(65) && player2.xVel > -10) {
-            player2.xVel -= 2;
-        }
-        }
-        
-        if(keyCode == 68 && player2.yPos > height-73 && player2.xVel < 0) {
-            player2.xVel += 2;
-            
-            for(var i = 0; i < 10; i++) {
-                grassParticleList[grassParticleList.length] = new Grass(player2.xPos-20, player2.yPos+20, player2.xVel-(Math.random()*3+1), -Math.random()*10);
-            }
-        }
-        
-        if(keyCode == 65 && player2.yPos > height-73 && player2.xVel > 0) {
-            player2.xVel -= 2;
-            
-            for(var i = 0; i < 10; i++) {
-                grassParticleList[grassParticleList.length] = new Grass(player2.xPos+20, player2.yPos+20, player2.xVel+(Math.random()*3+1), -Math.random()*10);
             }
         }
         
