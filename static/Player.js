@@ -16,7 +16,6 @@ function Player(playerNum) {
     if(playerNum === 1) {
         this.xPos = 250;
         this.yPos = 400;
-        
     }
     else if(playerNum === 2) {
         this.xPos = 650;
